@@ -1,3 +1,8 @@
+# Experimental
+This fork is for adding [CPO (Contrastive Policy Optimization)](https://arxiv.org/pdf/2401.08417.pdf) support
+
+---
+# Original README
 <img src="./diagram.png" width="450px"></img>
 
 ## Self-Rewarding Language Model (wip)
