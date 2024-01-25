@@ -331,6 +331,8 @@ class DPOTrainer(Module):
         train_self_reward_dataset: Dataset
     ):
         train_dataloader = DataLoader(train_self_reward_dataset, batch_size = self.batch_size, drop_last = True, shuffle = True)
+        train_dataloader = self.accelerator.prepare(train_dataloader)
+
         iter_dl = cycle(train_dataloader)
 
         while True:
@@ -350,7 +352,9 @@ class DPOTrainer(Module):
 
             if not (self.steps % self.check_early_stop_every):
 
-                if self.is_main and self.early_stopper():
+                early_stop_return = self.early_stopper()
+
+                if self.is_main and early_stop_return.should_stop:
                     self.break_signal.copy_(1.)
                     dist.all_reduce(self.break_signal)
 
